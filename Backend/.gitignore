@@ -3,3 +3,4 @@ images
 package-lock.json
 .DS_Store
 Thumbs.db
+app.js
