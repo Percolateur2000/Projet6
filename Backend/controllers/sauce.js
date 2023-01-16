@@ -71,11 +71,9 @@ exports.getAllSauce = (req, res) => {
 };
 
 exports.likeSauce = (req, res) => {
-    //appelle des infos de la sauce
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => {
             res.status(200).json(sauce)
-            // gestions des 3 cas
             switch (req.body.like) {
                 case 1:
                     sauce.usersLiked.push(req.auth.userId)
@@ -93,7 +91,7 @@ exports.likeSauce = (req, res) => {
                             sauce.dislikes = sauce.usersDisliked.length
                             sauce.save()
                         } else {
-                            console.log(`Erreur interne`)
+                            alert(`Une erreur est survenue, merci de réessayer`)
                         }
                     }
                     break;
