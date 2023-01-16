@@ -15,10 +15,6 @@ exports.createSauce = (req, res) => {
         .catch(e => { res.status(400).json({ e }) })
 };
 
-
-// TODO = supprimer l'ancienne image
-
-
 exports.modifySauce = (req, res) => {
     const sauceObject = req.file ? {
         ...JSON.parse(req.body.sauce),
@@ -32,10 +28,11 @@ exports.modifySauce = (req, res) => {
             } else {
                 const filename = sauce.imageUrl.split('/images/')[1];
                 fs.unlink(`images/${filename}`, () => {
-                Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
-                    .then(() => res.status(200).json({ message: 'Objet modifié!' }))
-                    .catch(error => res.status(401).json({ error }));
-                })}
+                    Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+                        .then(() => res.status(200).json({ message: 'Objet modifié!' }))
+                        .catch(error => res.status(401).json({ error }));
+                })
+            }
         })
         .catch((error) => {
             res.status(400).json({ error });
@@ -74,20 +71,38 @@ exports.getAllSauce = (req, res) => {
 };
 
 exports.likeSauce = (req, res) => {
-    // verifier si userId dans userslike ou usersdislike
-    // si connu et like => delete like
-    // si connu et dislike => update array (delete dislike, add like)
-    // sinon, update array like
-    // update like avec userslike.length 
-    // update dislike avec usersdislike.length 
-    // sauce.save
-};
-
-exports.dislikeSauce = (req, res) => {
-    // verifier si userId dans (users) like ou dislike
-    // si connu, update array (delete, add)
-    // sinon, update array (si dislike, update dislike)
-    // update dislike avec usersdislike.length 
-    // update like avec userslike.length 
-    // sauce.save
+    //appelle des infos de la sauce
+    Sauce.findOne({ _id: req.params.id })
+        .then(sauce => {
+            res.status(200).json(sauce)
+            // gestions des 3 cas
+            switch (req.body.like) {
+                case 1:
+                    sauce.usersLiked.push(req.auth.userId)
+                    sauce.likes = sauce.usersLiked.length
+                    sauce.save()
+                    break;
+                case 0:
+                    for (let i = 0; i < sauce.usersLiked.length || i < sauce.usersDisliked.length; i++) {
+                        if (req.auth.userId === sauce.usersLiked[i]) {
+                            sauce.usersLiked.splice(i, 1)
+                            sauce.likes = sauce.usersLiked.length
+                            sauce.save()
+                        } else if (req.auth.userId === sauce.usersDisliked[i]) {
+                            sauce.usersDisliked.splice(i, 1)
+                            sauce.dislikes = sauce.usersDisliked.length
+                            sauce.save()
+                        } else {
+                            console.log(`Erreur interne`)
+                        }
+                    }
+                    break;
+                case -1:
+                    sauce.usersDisliked.push(req.auth.userId)
+                    sauce.dislikes = sauce.usersDisliked.length
+                    sauce.save()
+                    break;
+            }
+        })
+        .catch(e => res.status(404).json({ e }))
 };
