@@ -11,9 +11,9 @@ exports.signup = (req, res) => {
             });
             user.save()
                 .then(() => res.status(201).json({ message: 'Utilisateur créé' }))
-                .catch(error => res.status(400).json({ error }));
+                .catch(e => res.status(400).json({ e }));
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(e => res.status(500).json({ e }));
 };
 
 exports.login = (req, res) => {
@@ -36,7 +36,7 @@ exports.login = (req, res) => {
                         )
                     });
                 })
-                .catch(error => res.status(500).json({ error }));
+                .catch(e => res.status(500).json({ e }));
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(e => res.status(500).json({ e }));
 };

@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const { json } = require('stream/consumers');
 
 module.exports = (req, res, next) => {
     try {

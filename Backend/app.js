@@ -6,7 +6,6 @@ const userRoutes = require('./routes/user')
 const sauceRoutes = require('./routes/sauces')
 const path = require('path');
 
-
 app.use(express.json())
 
 mongoose.set('strictQuery', false);
