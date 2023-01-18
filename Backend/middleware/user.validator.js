@@ -1,6 +1,7 @@
 const joi = require("joi");
 
 const validation = joi.object({
+<<<<<<< HEAD
 	email: joi.string().email().trim(true).required(),
 	password: joi.string().min(6).trim(true).required(),
 });
@@ -11,14 +12,27 @@ const validation = joi.object({
 // Joi.min(): It specifies the minimum number.
 // Joi.required(): Make a property required which will not allow undefined as value.
 
+=======
+    email: joi.string().email().trim(true).required(),
+    password: joi.string().min(6).trim(true).required(),
+});
+
+>>>>>>> main
 const userValidation = async (req, res, next) => {
 	const payload = {
 		email: req.body.email,
 		password: req.body.password,
 	};
+<<<<<<< HEAD
 	const { error } = validation.validate(payload);
 	if (error) {
 		res.status(406).json({ message: `Error in User Data : ${error.message}` });
+=======
+
+	const { error } = validation.validate(payload);
+	if (error) {
+		res.status(406).json({message: `Error in User Data : ${error.message}`});
+>>>>>>> main
 	} else {
 		next();
 	}
