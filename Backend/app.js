@@ -6,10 +6,12 @@ const userRoutes = require('./routes/user')
 const sauceRoutes = require('./routes/sauces')
 const path = require('path');
 
+require('dotenv').config()
+
 app.use(express.json())
 
 mongoose.set('strictQuery', false);
-mongoose.connect('mongodb+srv://vaen:loutre01@cluster0.jafhnqf.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(`mongodb+srv://${process.env.DB_ADMIN}:${process.env.DB_PASSWORD}@cluster0.jafhnqf.mongodb.net/?retryWrites=true&w=majority`,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
