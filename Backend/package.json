@@ -12,7 +12,9 @@
   "dependencies": {
     "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
+    "express-joi-validation": "^5.0.1",
     "express-rate-limit": "^6.7.0",
+    "joi": "^17.7.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.3",
     "mongoose-unique-validator": "^3.1.0",
